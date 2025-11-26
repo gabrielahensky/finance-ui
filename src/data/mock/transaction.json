@@ -1,0 +1,58 @@
+{
+  "user": {
+    "id": "u_001",
+    "name": "Gabriela",
+    "avatar": "/avatar.png"
+  },
+  "monthlySummary": {
+    "income": 8200000,
+    "expense": 4750000,
+    "balance": 3450000
+  },
+  "categories": [
+    { "id": "cat_food", "name": "Food", "color": "#FB6E3B" },
+    { "id": "cat_transport", "name": "Transport", "color": "#00A3FF" },
+    { "id": "cat_shopping", "name": "Shopping", "color": "#9F7AEA" },
+    { "id": "cat_entertainment", "name": "Entertainment", "color": "#FACC15" },
+    { "id": "cat_bills", "name": "Bills", "color": "#F43F5E" }
+  ],
+  "budgets": [
+    { "categoryId": "cat_food", "limit": 1200000, "used": 820000 },
+    { "categoryId": "cat_transport", "limit": 600000, "used": 320000 },
+    { "categoryId": "cat_shopping", "limit": 1500000, "used": 700000 }
+  ],
+  "transactions": [
+    {
+      "id": "t_001",
+      "type": "expense",
+      "amount": 45000,
+      "categoryId": "cat_food",
+      "note": "Lunch",
+      "date": "2025-02-11"
+    },
+    {
+      "id": "t_002",
+      "type": "expense",
+      "amount": 22000,
+      "categoryId": "cat_transport",
+      "note": "Bus ticket",
+      "date": "2025-02-10"
+    },
+    {
+      "id": "t_003",
+      "type": "income",
+      "amount": 2000000,
+      "categoryId": null,
+      "note": "Freelance",
+      "date": "2025-02-05"
+    },
+    {
+      "id": "t_004",
+      "type": "expense",
+      "amount": 150000,
+      "categoryId": "cat_shopping",
+      "note": "Shopee",
+      "date": "2025-02-02"
+    }
+  ]
+}
