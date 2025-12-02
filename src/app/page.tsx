@@ -1,89 +1,86 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { supabaseBrowser } from "@/lib/supabase/client"
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase/client";
 
-import { Header } from "@/components/dashboard/header"
-import { BalanceCard } from "@/components/dashboard/balance-card"
-import { HeroChart } from "@/components/dashboard/hero-chart"
-import { MiniStatCards } from "@/components/dashboard/mini-stat-cards"
-import { QuickAddBar } from "@/components/dashboard/quick-add-bar"
-import { TransactionsList } from "@/components/dashboard/transactions-list"
+import { Header } from "@/components/dashboard/header";
+import { BalanceCard } from "@/components/dashboard/balance-card";
+import { HeroChart } from "@/components/dashboard/hero-chart";
+import { MiniStatCards } from "@/components/dashboard/mini-stat-cards";
+import { QuickAddBar } from "@/components/dashboard/quick-add-bar";
+import { TransactionsList } from "@/components/dashboard/transactions-list";
 
 export default function HomePage() {
-  const supabase = supabaseBrowser()
+  const router = useRouter();
+  const client = supabase();
 
-  const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState<any>(null)
-  const [transactions, setTransactions] = useState<any[]>([])
-  const [income, setIncome] = useState(0)
-  const [expense, setExpense] = useState(0)
-  const [balance, setBalance] = useState(0)
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [income, setIncome] = useState(0);
+  const [expense, setExpense] = useState(0);
+  const [balance, setBalance] = useState(0);
 
   useEffect(() => {
     const load = async () => {
-      setLoading(true)
+      setLoading(true);
 
-      // GET USER
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
+      // GET SESSION (v2)
+      const { data, error } = await client.auth.getSession();
+      const user = data.session?.user;
 
-      setUser(user ?? null)
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+
+      setUser(user);
 
       // GET TRANSACTIONS
-      const { data: tx } = await supabase
+      const { data: tx } = await client
         .from("transactions")
         .select("*")
-        .order("date", { ascending: false })
+        .order("date", { ascending: false });
 
       if (tx) {
-        setTransactions(tx)
+        setTransactions(tx);
 
         const inc = tx
           .filter((t) => t.type === "income")
-          .reduce((a, b) => a + Number(b.amount), 0)
+          .reduce((a, b) => a + Number(b.amount), 0);
 
         const exp = tx
           .filter((t) => t.type === "expense")
-          .reduce((a, b) => a + Number(b.amount), 0)
+          .reduce((a, b) => a + Number(b.amount), 0);
 
-        setIncome(inc)
-        setExpense(exp)
-        setBalance(inc - exp)
+        setIncome(inc);
+        setExpense(exp);
+        setBalance(inc - exp);
       }
 
-      setLoading(false)
-    }
+      setLoading(false);
+    };
 
-    load()
-  }, [])
+    load();
+  }, []);
 
   if (loading) {
     return (
       <div className="w-full h-screen flex items-center justify-center text-white/70">
         Loading…
       </div>
-    )
+    );
   }
 
   return (
     <main className="min-h-screen px-4 py-6 max-w-3xl mx-auto space-y-6">
       <Header user={user} />
-
       <BalanceCard balance={balance} />
-
       <HeroChart data={transactions} />
-
-      <MiniStatCards
-        income={income}
-        expense={expense}
-        balance={balance}
-      />
-
+      <MiniStatCards income={income} expense={expense} balance={balance} />
       <QuickAddBar />
-
       <TransactionsList transactions={transactions.slice(0, 10)} />
     </main>
-  )
+  );
 }

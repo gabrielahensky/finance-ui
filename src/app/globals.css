@@ -1,18 +1,4 @@
-/* src/app/globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* Global resets & defaults */
-html, body {
-  background-color: #F7FAFC;
-  color: #1a1a1a;
-  font-family: 'Inter', sans-serif;
-}
+@custom-variant dark (&:is(.dark *));
 
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Optional: utilities bisa ditambah jika perlu */
