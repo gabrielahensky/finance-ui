@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 import { Header } from "@/components/dashboard/header";
 import { BalanceCard } from "@/components/dashboard/balance-card";
@@ -13,7 +13,7 @@ import { TransactionsList } from "@/components/dashboard/transactions-list";
 
 export default function HomePage() {
   const router = useRouter();
-  const client = supabase();
+  const client = createClient();
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
