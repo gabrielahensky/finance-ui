@@ -14,88 +14,84 @@ export default function RegisterPage() {
     setLoading(true);
 
     const form = new FormData(e.currentTarget);
+    const fullName = form.get("fullName") as string;
     const email = form.get("email") as string;
     const password = form.get("password") as string;
-    const fullName = form.get("fullName") as string;
 
     const supabase = createClient();
-
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: { full_name: fullName },
-      },
+      options: { data: { full_name: fullName } },
     });
 
     setLoading(false);
-
     if (error) return alert(error.message);
     router.push("/login");
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 flex items-center justify-center relative overflow-hidden">
-      {/* Background Glow */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/30 via-purple-600/20 to-indigo-700/30 blur-3xl opacity-30" />
+    <main className="min-h-screen flex items-center justify-center px-6 relative bg-gradient-to-br from-[#dfe8ff] via-[#eef3ff] to-white overflow-hidden">
+      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-25 pointer-events-none" />
 
-      {/* Floating orbs */}
-      <div className="absolute w-72 h-72 bg-blue-500/20 rounded-full blur-[120px] -top-20 -left-20" />
-      <div className="absolute w-72 h-72 bg-purple-500/20 rounded-full blur-[140px] bottom-0 right-0" />
-
-      {/* Glass Card */}
-      <div className="relative w-full max-w-md px-8 py-10 rounded-3xl backdrop-blur-2xl bg-white/10 border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-        <h1 className="text-white text-3xl font-semibold text-center mb-8">
+      <div className="relative w-full max-w-md px-8 py-10 bg-white/60 backdrop-blur-2xl border border-white/40 rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.12)]">
+        <h1 className="text-3xl font-semibold text-center text-neutral-900">
           Create Account
         </h1>
+        <p className="text-neutral-600 text-center mt-2">
+          Start managing your finances today
+        </p>
 
-        <form onSubmit={handleRegister} className="space-y-6">
-          {/* Full Name */}
+        <form onSubmit={handleRegister} className="mt-10 space-y-6">
           <div className="relative">
-            <User className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 h-5 w-5" />
+            <User className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 h-5 w-5" />
             <input
               type="text"
               name="fullName"
-              className="w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-white/40"
               placeholder="Full Name"
               required
+              className="w-full bg-white/40 border border-white/50 text-neutral-800 placeholder-neutral-500 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </div>
 
-          {/* Email */}
           <div className="relative">
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 h-5 w-5" />
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 h-5 w-5" />
             <input
               type="email"
               name="email"
-              className="w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-white/40"
               placeholder="Email"
               required
+              className="w-full bg-white/40 border border-white/50 text-neutral-800 placeholder-neutral-500 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </div>
 
-          {/* Password */}
           <div className="relative">
-            <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 h-5 w-5" />
+            <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 h-5 w-5" />
             <input
               type="password"
               name="password"
-              className="w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-white/40"
               placeholder="Password"
               required
+              className="w-full bg-white/40 border border-white/50 text-neutral-800 placeholder-neutral-500 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </div>
 
-          {/* Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl bg-white/20 border border-white/30 text-white font-medium backdrop-blur-xl hover:bg-white/30 transition-all active:scale-[0.98]"
+            className="w-full py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition active:scale-[0.98]"
           >
-            {loading ? "Creating..." : "Create Account"}
+            {loading ? "Creating…" : "Create Account"}
           </button>
+
+          <p className="text-center text-neutral-600 mt-3">
+            Already have an account?{" "}
+            <a href="/login" className="text-blue-600 font-medium hover:underline">
+              Login here
+            </a>
+          </p>
         </form>
       </div>
-    </div>
+    </main>
   );
 }
